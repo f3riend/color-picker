@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Picker</title>
+    <script src="https://cdn.socket.io/4.0.1/socket.io.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://unpkg.com/ionicons@4.1.2/dist/ionicons.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script type="module" src="{{ url_for('static', filename='js/script.js') }}"></script>
+</head>
+<body>
+    <ul id="namesList">
+        {% for color in colors %}
+            <li>
+                <span>COLORS</span>
+                <span><ion-icon name="copy"></ion-icon> <div>{{ color[0] }}</div> </span>
+                <hr>
+                <span><ion-icon name="copy"></ion-icon> <div> {{ color[1] }} </div> </span>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

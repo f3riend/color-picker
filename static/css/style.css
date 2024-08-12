@@ -1,0 +1,104 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    list-style-type: none;
+    font-size: 1rem;
+    color: rgb(92, 92, 92);
+    font-family: "Inter", sans-serif;
+    scroll-behavior: smooth;
+    user-select: none;
+}
+
+:root
+{
+    --shadow: #141414;
+    --card: #0f0f0f; 
+}
+
+
+::-webkit-scrollbar
+{
+    appearance: none;
+}
+
+::-webkit-scrollbar-thumb
+{
+    appearance: none;
+}
+
+
+body
+{
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding:  1rem;
+}
+
+ul
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+li
+{
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column;
+    gap:8px;
+    padding: 0 1rem;
+    margin-top: 1rem;
+    width: 280px;
+    height: 116px;
+    background-color: var(--card);
+    box-shadow: 6px 8px 0px var(--shadow);
+}
+
+li > span:first-child
+{
+    font-size: 12px;
+    text-align: center;
+    color: whitesmoke;
+}
+
+hr
+{
+    background-color: var(--shadow);
+    z-index: 10;
+}
+
+ion-icon
+{
+    margin-right: 1rem;
+    cursor: pointer;
+}
+
+.copy-icon {
+    cursor: pointer;
+    margin-left: 10px;
+    position: relative;
+}
+.copy-icon::after {
+    content: '';
+    position: absolute;
+    top: -1.5rem;
+    left: -1rem;
+    transform: translateX(-50%);
+    display: none;
+    color: var(--shadow);
+    background-color:rgb(255, 255, 255);
+}
+.copy-icon.clicked::after {
+    content: 'copied';
+    display: block;
+    color: var(--card);
+    padding: 4px 8px;
+}
+
