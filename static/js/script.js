@@ -31,16 +31,7 @@ socket.on('update', function(msg) {
             if (nextNode && nextNode.nodeType === Node.TEXT_NODE) {
                 // Gelen text düğümünü al
                 const textContent = nextNode.textContent.trim();
-                console.log("Next text content:", textContent);
-    
-                copyContent(textContent);
-    
-                this.classList.add('clicked');
-    
-                // Görsel geri bildirimi 2 saniye sonra kaldır
-                setTimeout(() => {
-                    this.classList.remove('clicked');
-                }, 1000);
+                socket.emit('update',textContent);
             }
         }
     

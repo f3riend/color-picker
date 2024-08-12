@@ -1,11 +1,13 @@
 from flask import Flask, render_template
 from flask_socketio import SocketIO, emit
 from pynput import keyboard, mouse
-from threading import Thread
+from threading import Thread, Event
 from PIL import ImageGrab
 import pyautogui
 import webview
 import sys
+import pyperclip
+import os
 
 app = Flask(__name__, static_folder='static', static_url_path='/static')
 socketio = SocketIO(app, cors_allowed_origins="*", logger=True, engineio_logger=True)
@@ -17,6 +19,9 @@ height = 225
 
 locX = 0
 locY = pyautogui.size().height - height
+
+# Event to signal when to stop the threads
+stop_event = Event()
 
 def rgb_to_hex(rgb):
     r, g, b = rgb
@@ -37,19 +42,25 @@ def on_click(x, y, button, pressed):
         colors.append([rgb, hexcode])
         socketio.emit("update", {'colors': colors})
 
+@socketio.on('update')
+def handle_update(msg):
+    pyperclip.copy(msg)
+
 def on_press(key):
     if key == keyboard.Key.esc:
-        print("Escape key pressed. Exiting...")
-        socketio.stop()  # Stop Flask-SocketIO server
-        sys.exit(0)  # Exit the application
+        print("ESC pressed, exiting...")
+        stop_event.set()  # Signal the threads to stop
+        os._exit(0)  # Forcefully terminate the program
 
 def start_mouse_listener():
     with mouse.Listener(on_click=on_click) as listener:
-        listener.join()
+        while not stop_event.is_set():
+            listener.join(0.1)
 
 def start_keyboard_listener():
     with keyboard.Listener(on_press=on_press) as listener:
-        listener.join()
+        while not stop_event.is_set():
+            listener.join(0.1)
 
 def start_flask():
     socketio.run(app, debug=False, use_reloader=False)  # Disable debug and reloader
@@ -68,3 +79,4 @@ if __name__ == "__main__":
     # Start the WebView window
     window = webview.create_window("My App", "http://localhost:5000", x=locX, y=locY, width=width, height=height, frameless=True, on_top=True, draggable=False)
     webview.start()
+
